@@ -1,0 +1,35 @@
+.brandName {
+  font-size: 3vw;
+}
+
+@media screen and (max-width: 876px) {
+  .brandName {
+    font-size: 6vw;
+  }
+  .container {
+    display: block !important;
+    text-align: center !important;
+  }
+  .container form {
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .navbarClass {
+    justify-content: center;
+    margin-top: 7px;
+  }
+
+  .container input {
+    width: 100% !important;
+  }
+}
+
+.invalid input {
+  border: 1px solid #b40e0e;
+  background-color: #fddddd;
+}
+
+.invalid input:focus {
+  border-color: #ff8800;
+  background-color: #fbe8d2;
+}

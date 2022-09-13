@@ -34,9 +34,9 @@ const AllRecipeCards = () => {
   }
   return (
     <Container className="my-5">
-      <Row>
+      <Row className="justify-content-center justify-content-lg-start">
         {recipes.map((recipe) => (
-          <Col className="mb-5" key={Math.random()}>
+          <Col sm="auto" xl="4" xxl="3" className="mb-5" key={Math.random()}>
             <RecipeCard recipeDetails={recipe} />
           </Col>
         ))}

@@ -4,6 +4,7 @@ const initialState = {
   favUrl: [],
   favKeys: {},
   isFavFetched: false,
+  msg: "Search your favourite recipes!",
 };
 
 const recipesSlice = createSlice({
@@ -14,6 +15,7 @@ const recipesSlice = createSlice({
       state.foodRecipes = actions.payload.recipes;
       state.favKeys = actions.payload.favKeys;
       state.isFavFetched = actions.payload.isFavFetched;
+      state.msg = actions.payload.msg;
     },
     fetchFavUrl(state, actions) {
       state.favUrl = actions.payload.url; //error
@@ -41,6 +43,7 @@ const recipesSlice = createSlice({
       if (state.isFavFetched) {
         state.foodRecipes = [];
         state.isFavFetched = false;
+        state.msg = "Login to see your saved recipes";
       }
     },
   },

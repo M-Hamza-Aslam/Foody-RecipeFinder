@@ -27,31 +27,41 @@ export const fetchRecipes = (actions) => {
           throw new Error();
         }
         const data = await response.json();
-        dispatch(
-          recipesActions.fetchRecipes({
-            recipes: data.hits,
-            isFavFetched: false,
-          })
-        );
 
-        //fetching favurl and favkeys
-        console.log(actions.UID);
-        url = `https://foody-recipefinder-default-rtdb.asia-southeast1.firebasedatabase.app/users/${actions.UID}.json`;
-        const favResponse = await fetch(url);
-        if (!favResponse.ok) {
-          throw new Error();
-        }
-        const favData = await favResponse.json();
-        const favUrl = [];
-        const favKeys = {};
-        if (favData) {
-          for (const key in favData) {
-            favUrl.push(favData[key].recipeData.recipe.url);
-            const url = favData[key].recipeData.recipe.url;
-            favKeys[url] = key;
+        if (data.hits.length === 0) {
+          dispatch(
+            recipesActions.fetchRecipes({
+              recipes: data.hits,
+              isFavFetched: false,
+              msg: "No Recipe Found, try another search ",
+            })
+          );
+        } else {
+          dispatch(
+            recipesActions.fetchRecipes({
+              recipes: data.hits,
+              isFavFetched: false,
+            })
+          );
+          //fetching fav data
+          url = `https://foody-recipefinder-default-rtdb.asia-southeast1.firebasedatabase.app/users/${actions.UID}.json`;
+          const favResponse = await fetch(url);
+          if (!favResponse.ok) {
+            throw new Error();
           }
+          const favData = await favResponse.json();
+          const favUrl = [];
+          const favKeys = {};
+          if (favData) {
+            for (const key in favData) {
+              favUrl.push(favData[key].recipeData.recipe.url);
+              const url = favData[key].recipeData.recipe.url;
+              favKeys[url] = key;
+            }
+          }
+          dispatch(recipesActions.fetchFavUrl({ url: favUrl, favKeys }));
         }
-        dispatch(recipesActions.fetchFavUrl({ url: favUrl, favKeys }));
+        //fetching favurl and favkeys
       } else if (actions.method === "favFetch") {
         url = `https://foody-recipefinder-default-rtdb.asia-southeast1.firebasedatabase.app/users/${actions.UID}.json`;
         const response = await fetch(url);
@@ -61,20 +71,30 @@ export const fetchRecipes = (actions) => {
         const data = await response.json();
         const favRecipes = [];
         const favKeys = {};
-        if (data) {
+        if (!data) {
+          dispatch(
+            recipesActions.fetchRecipes({
+              recipes: favRecipes,
+              favKeys,
+              isFavFetched: true,
+              msg: "No favourites Found!",
+            })
+          );
+        } else {
           for (const key in data) {
             favRecipes.push(data[key].recipeData);
             const url = data[key].recipeData.recipe.url;
             favKeys[url] = key;
           }
+          dispatch(
+            recipesActions.fetchRecipes({
+              recipes: favRecipes,
+              favKeys,
+              isFavFetched: true,
+              msg: "Search and add your favourite recipes",
+            })
+          );
         }
-        dispatch(
-          recipesActions.fetchRecipes({
-            recipes: favRecipes,
-            favKeys,
-            isFavFetched: true,
-          })
-        );
       }
       console.log("success");
       dispatch(

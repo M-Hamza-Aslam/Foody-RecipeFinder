@@ -51,11 +51,15 @@ const LoginModal = (props) => {
     const email = emailInputValue;
     const password = passwordInputValue;
     dispatch(signUp({ email, password, hideModal: props.onHide }));
+    resetEmailInput();
+    resetPasswordInput();
   };
   const loginHandler = () => {
     const email = emailInputValue;
     const password = passwordInputValue;
     dispatch(login({ email, password, hideModal: props.onHide }));
+    resetEmailInput();
+    resetPasswordInput();
   };
   const onClose = () => {
     resetEmailInput();
@@ -113,6 +117,7 @@ const LoginModal = (props) => {
           disabled={!formIsValid}
           variant="outline-primary"
           onClick={loginHandler}
+          type="submit"
         >
           Login
         </Button>
@@ -120,6 +125,7 @@ const LoginModal = (props) => {
           disabled={!formIsValid}
           variant="outline-primary"
           onClick={signupHandler}
+          type="submit"
         >
           Sign up
         </Button>

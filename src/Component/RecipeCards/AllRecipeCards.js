@@ -8,26 +8,18 @@ import { Fragment } from "react";
 const AllRecipeCards = () => {
   const recipesState = useSelector((state) => state.recipes);
   const recipes = recipesState.foodRecipes;
-  const isFavFetched = recipesState.isFavFetched;
+  const msg = recipesState.msg;
 
   if (recipes.length === 0) {
-    let text;
-    if (isFavFetched) {
-      text = "No favourites Found!";
-    } else {
-      text = "Search your favourite recipes!";
-    }
     return (
       <Fragment>
-        <h1 className="text-center mt-5">{text}</h1>
+        <h1 className="text-center mt-5">{msg}</h1>
         <div className="d-flex justify-content-center">
-          <a href="https://www.animatedimages.org/cat-foods-and-drinks-298.htm">
-            <img
-              src="https://www.animatedimages.org/data/media/298/animated-eat-and-drink-image-0151.gif"
-              border="0"
-              alt="animated-eat-and-drink-0151"
-            />
-          </a>
+          <img
+            src="https://www.animatedimages.org/data/media/298/animated-eat-and-drink-image-0151.gif"
+            border="0"
+            alt="animated-eat-and-drink-0151"
+          />
         </div>
       </Fragment>
     );
